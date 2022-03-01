@@ -292,6 +292,7 @@ export default {
             sessionStorage.setItem("access_token", response.data.access_token);
             // localStorage.setItem("access_token", response.data.access_token);
             sessionStorage.setItem("user", JSON.stringify(response.data.user));
+            console.log('current user', sessionStorage.getItem('user'));
             // localStorage.setItem("user", JSON.stringify(response.data.user));
 
             this.$router.push("/home").catch(err => err);

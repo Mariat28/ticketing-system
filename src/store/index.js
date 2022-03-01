@@ -19,6 +19,7 @@ const state = {
   agents: [],
   contacts: [],
   workingTickets: [],
+  sortedtickets: [],
   statuses: null,
   priorities: null,
   departments: null,
@@ -87,7 +88,7 @@ const actions = {
     router.go()
   },
   async fetchAllTickets({commit}, companyId) {
-    await axios.get(`tickets/${companyId}`)
+    await axios.get(`tickets/${companyId}/${sessionStorage.getItem('user').role_id}/${sessionStorage.getItem('user').department_id}`)
     .then(response => {
       commit('ADD_ALL_TICKETS', response.data)
     });
@@ -111,10 +112,12 @@ const actions = {
     commit('CLEAR_ALL_TICKETS')
   },
   async getTypes({commit}){
+    const company_id = sessionStorage.getItem('user').company_id;
     axios
-      .get('types')
+      .post('types', company_id)
       .then(response => {
         commit('FETCH_TYPES', response.data);
+        console.log(response.data);
       });
   },
   async getPriorities({commit}) {
@@ -139,7 +142,7 @@ const actions = {
   },
   async getAgents({commit},companyId) {
     await axios
-      .get(`users/${companyId}`)
+      .get(`users/${companyId}/${sessionStorage.getItem('user').id}`)
       .then((response) => {
         console.log("Agents")
         console.log(response.data)
@@ -168,9 +171,9 @@ const actions = {
   }
 },
   mutations = {
-    LOGOUT(state){
+    // LOGOUT(state){
 
-    },
+    // },
     SET_LOADER(state, loading){
       state.isLoading = loading
     },
